@@ -158,3 +158,10 @@ add_action('wp_enqueue_scripts', function () {
         true
     );
 });
+//hide editor for pages
+add_filter('use_block_editor_for_post_type', function($use, $post_type) {
+    if ($post_type === 'page') {
+        return false;
+    }
+    return $use;
+}, 10, 2);
