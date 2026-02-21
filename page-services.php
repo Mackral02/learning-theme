@@ -1,12 +1,11 @@
 <?php 
-    /* Template Name: About Page */
+    /* Template Name: Services Page */
     get_header(); 
 ?>
 
 <main>
     <?php get_template_part('template-parts/hero'); ?>
-    <?php get_template_part('template-parts/services'); ?>
-    <?php get_template_part('template-parts/about-us'); ?>
+    <?php get_template_part('template-parts/services-category'); ?>
     <?php get_template_part('template-parts/testimonials'); ?>
 </main>
 
