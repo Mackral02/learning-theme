@@ -66,7 +66,7 @@ class Footer_Menu_Walker extends Walker_Nav_Menu {
         $url = ! empty($item->url) ? $item->url : '';
         $title = $item->title;
 
-        $output .= '<a class="btn btn-link" href="' . esc_url($url) . '">';
+        $output .= '<a class="btn btn-link text-decoration-none" href="' . esc_url($url) . '">';
         $output .= esc_html($title);
         $output .= '</a>';
     }
@@ -137,6 +137,13 @@ add_action('wp_enqueue_scripts', function () {
     // );
     wp_enqueue_script(
         'jquery'
+    );
+    wp_enqueue_script(
+        'bootstrap',
+        'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js',
+        [],
+        $version,
+        true
     );
     wp_enqueue_script(
         'wow',
@@ -264,3 +271,5 @@ add_filter( 'wpforms_submit_button_attributes', function( $attributes, $form ) {
     return $attributes;
 
 }, 10, 2 );
+
+require get_template_directory() . '/inc/components/theme-customizer.php';
