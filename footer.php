@@ -40,7 +40,7 @@
             <div class="copyright">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <?php echo date('Y'); ?> <a class="border-bottom" href="#"><?php bloginfo('name'); ?></a>, All rights reserved.                        
+                        &copy; <?php echo date('Y'); ?> <a class="border-bottom" href="#"><?php bloginfo('name'); ?></a>, All rights reserved.
                     </div>
                     <div class="col-md-6 text-center text-md-end">
                         Designed with &hearts; by <a class="border-bottom" href="https://mackral.gonsalves.xyz/" target="_blank">Mac</a>
@@ -54,6 +54,43 @@
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
     <?php wp_footer(); ?>
-</body>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Select all WPForms fields inside a form
+            const forms = document.querySelectorAll('.wpforms-form');
 
-</html>
+            forms.forEach(form => {
+                const fields = form.querySelectorAll('.wpforms-field');
+
+                fields.forEach(field => {
+                    const label = field.querySelector('label');
+                    const input = field.querySelector('input, textarea');
+
+                    if (label && input) {
+                        // Only do it if label is BEFORE input
+                        if (label.compareDocumentPosition(input) & Node.DOCUMENT_POSITION_FOLLOWING) {
+                            field.insertBefore(input, label); // Swap order
+                        }
+
+                        // Add Bootstrap floating label wrapper
+                        if (!field.classList.contains('form-floating')) {
+                            field.classList.add('form-floating');
+                        }
+
+                        // Ensure input has form-control
+                        input.classList.add('form-control');
+
+                        // Set input id if missing for label "for" attribute
+                        if (!input.id) {
+                            const randomId = 'wpf-' + Math.random().toString(36).substr(2, 9);
+                            input.id = randomId;
+                            label.setAttribute('for', randomId);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+    </body>
+
+    </html>

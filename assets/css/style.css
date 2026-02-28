@@ -1,8 +1,20 @@
 /********** Template CSS **********/
 :root {
-    --primary: #06BBCC;
+    --primary: rgb(6, 187, 204);
     --light: #F0FBFC;
     --dark: #181d38;
+    --bs-primary-rgb: 6, 187, 204;
+    --bs-heading-color: var(--dark);
+}
+.btn-primary {
+    --bs-btn-bg: var(--primary);
+    --bs-btn-border-color: var(--primary);
+    --bs-btn-hover-bg: var(--dark);
+    --bs-btn-hover-border-color: var(--dark);
+    --bs-btn-active-bg: var(--dark);
+    --bs-btn-active-border-color: var(--dark);
+    --bs-btn-disabled-bg: var(--primary);
+    --bs-btn-disabled-border-color: var(--primary);
 }
 
 .fw-medium {
@@ -367,7 +379,6 @@
     border-color: var(--primary);
 }
 
-
 /*** Footer ***/
 .footer .btn.btn-social {
     margin-right: 5px;
@@ -432,4 +443,12 @@
     margin-right: 0;
     padding-right: 0;
     border-right: none;
+}
+
+.header-menu{
+    background-color: rgb(227, 222, 219) !important;
+}
+.custom-logo {
+    max-height: 80px;
+    width: auto;
 }

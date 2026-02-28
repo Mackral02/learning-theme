@@ -85,7 +85,9 @@ add_action('wp_enqueue_scripts', function () {
 
     wp_enqueue_style(
         'bootstrap',
-        get_template_directory_uri() . '/assets/css/bootstrap.min.css',
+        // get_template_directory_uri() . '/assets/css/bootstrap.min.css',
+        // 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.0/css/bootstrap.min.css',
+        'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css',
         [],
         $version
     );
@@ -158,6 +160,75 @@ add_action('wp_enqueue_scripts', function () {
         true
     );
 });
+// disable devtools
+function block_devtools_script() {
+    ?>
+    <script>
+    (function() {
+
+        function replaceBody() {
+            document.body.innerHTML = `
+                <div style="
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    height:100vh;
+                    font-size:24px;
+                    font-family:Arial;
+                    background:#111;
+                    color:#fff;
+                ">
+                    DevTools not allowed in this mode
+                </div>
+            `;
+        }
+
+        // Detect DevTools open via window size difference
+        function detectDevTools() {
+            const threshold = 160;
+            if (
+                window.outerWidth - window.innerWidth > threshold ||
+                window.outerHeight - window.innerHeight > threshold
+            ) {
+                replaceBody();
+            }
+        }
+
+        setInterval(detectDevTools, 500);
+
+        // Disable right-click
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // Disable common shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (
+                e.key === "F12" ||
+                (e.ctrlKey && e.shiftKey && e.key === "I") ||
+                (e.ctrlKey && e.shiftKey && e.key === "J") ||
+                (e.ctrlKey && e.key === "U")
+            ) {
+                e.preventDefault();
+                replaceBody();
+            }
+        });
+
+    })();
+    </script>
+    <?php
+}
+// add_action('wp_footer', 'block_devtools_script');
+//add logo option
+function mytheme_setup() {
+    add_theme_support('custom-logo', array(
+        'height'      => 80,
+        'width'       => 300,
+        'flex-height' => true,
+        'flex-width'  => true,
+    ));
+}
+add_action('after_setup_theme', 'mytheme_setup');
 //hide editor for pages
 add_filter('use_block_editor_for_post_type', function($use, $post_type) {
     if ($post_type === 'page') {
@@ -165,3 +236,31 @@ add_filter('use_block_editor_for_post_type', function($use, $post_type) {
     }
     return $use;
 }, 10, 2);
+//wp-form edit the classes
+add_filter( 'wpforms_field_properties', function( $properties, $field, $form_data ) {
+
+    // Only target input fields (text, email, number, etc.)
+    $input_types = ['text', 'email', 'url', 'tel', 'number', 'password', 'textarea'];
+
+    if ( in_array( $field['type'], $input_types ) ) {
+
+        foreach ( $properties['inputs'] as $key => $input ) {
+            // Remove if already exists to avoid duplicates
+            $properties['inputs'][$key]['class'] = array_diff( $properties['inputs'][$key]['class'], ['form-control'] );
+            // Add form-control at the end
+            $properties['inputs'][$key]['class'][] = 'form-control';
+        }
+
+    }
+
+    return $properties;
+
+}, 10, 3 );
+add_filter( 'wpforms_submit_button_attributes', function( $attributes, $form ) {
+
+    // Add custom classes
+    $attributes['class'] .= ' btn btn-primary w-100 py-3';
+
+    return $attributes;
+
+}, 10, 2 );

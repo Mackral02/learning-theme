@@ -44,62 +44,74 @@
             <a href="#" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Free Call<i class="fa fa-solid fa-phone ms-3"></i></a>
         </div>
     </nav> */ ?>
-    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-    <a href="<?php echo esc_url(home_url('/')); ?>" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-        <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i><?php bloginfo('name'); ?></h2>
-    </a>
-    <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0 header-menu">
         <?php
-        // Dynamic menu
-        if (has_nav_menu('primary')) {
-            wp_nav_menu([
-                'theme_location' => 'primary',
-                'container' => false,
-                'menu_class' => 'navbar-nav ms-auto p-4 p-lg-0',
-                'fallback_cb' => '__return_false',
-                'depth' => 2,
-                'walker' => new class extends Walker_Nav_Menu {
-                    function start_lvl(&$output, $depth = 0, $args = null) {
-                        $output .= '<div class="dropdown-menu fade-down m-0">';
-                    }
-                    function end_lvl(&$output, $depth = 0, $args = null) {
-                        $output .= '</div>';
-                    }
-                    function start_el(&$output, $item, $depth = 0, $args = null, $id = 0) {
-                        $classes = empty($item->classes) ? [] : (array) $item->classes;
-                        $has_children = in_array('menu-item-has-children', $classes);
-                        $classes[] = 'nav-item';
-                        $class_names = join(' ', $classes);
-
-                        $atts = [
-                            'title' => !empty($item->attr_title) ? $item->attr_title : '',
-                            'target' => !empty($item->target) ? $item->target : '',
-                            'rel' => !empty($item->xfn) ? $item->xfn : '',
-                            'href' => !empty($item->url) ? $item->url : '',
-                            'class' => 'nav-link' . ($has_children ? ' dropdown-toggle' : ''),
-                            'data-bs-toggle' => $has_children ? 'dropdown' : '',
-                        ];
-
-                        $atts = array_map('esc_attr', $atts);
-                        $output .= '<a ' . implode(' ', array_map(fn($k,$v)=>"$k=\"$v\"", array_keys($atts), $atts)) . '>' . esc_html($item->title) . '</a>';
-                    }
-                    function end_el(&$output, $item, $depth = 0, $args = null) {
-                        // Close nav-item automatically handled by Bootstrap
-                    }
-                }
-            ]);
+        if (function_exists('the_custom_logo')) {
+            the_custom_logo();
+        } else {
+        ?>
+            <a href="<?php echo esc_url(home_url('/')); ?>" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+                <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i><?php bloginfo('name'); ?></h2>
+            </a>
+        <?php
         }
         ?>
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
 
-        <!-- CTA button -->
-        <a href="#" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">
-            Free Call<i class="fa fa-solid fa-phone ms-3"></i>
-        </a>
+            <?php
+            // Dynamic menu
+            if (has_nav_menu('primary')) {
+                wp_nav_menu([
+                    'theme_location' => 'primary',
+                    'container' => false,
+                    'menu_class' => 'navbar-nav ms-auto p-4 p-lg-0',
+                    'fallback_cb' => '__return_false',
+                    'depth' => 2,
+                    'walker' => new class extends Walker_Nav_Menu {
+                        function start_lvl(&$output, $depth = 0, $args = null)
+                        {
+                            $output .= '<div class="dropdown-menu fade-down m-0">';
+                        }
+                        function end_lvl(&$output, $depth = 0, $args = null)
+                        {
+                            $output .= '</div>';
+                        }
+                        function start_el(&$output, $item, $depth = 0, $args = null, $id = 0)
+                        {
+                            $classes = empty($item->classes) ? [] : (array) $item->classes;
+                            $has_children = in_array('menu-item-has-children', $classes);
+                            $classes[] = 'nav-item';
+                            $class_names = join(' ', $classes);
 
-    </div>
-</nav>
+                            $atts = [
+                                'title' => !empty($item->attr_title) ? $item->attr_title : '',
+                                'target' => !empty($item->target) ? $item->target : '',
+                                'rel' => !empty($item->xfn) ? $item->xfn : '',
+                                'href' => !empty($item->url) ? $item->url : '',
+                                'class' => 'nav-link' . ($has_children ? ' dropdown-toggle' : ''),
+                                'data-bs-toggle' => $has_children ? 'dropdown' : '',
+                            ];
+
+                            $atts = array_map('esc_attr', $atts);
+                            $output .= '<a ' . implode(' ', array_map(fn($k, $v) => "$k=\"$v\"", array_keys($atts), $atts)) . '>' . esc_html($item->title) . '</a>';
+                        }
+                        function end_el(&$output, $item, $depth = 0, $args = null)
+                        {
+                            // Close nav-item automatically handled by Bootstrap
+                        }
+                    }
+                ]);
+            }
+            ?>
+
+            <!-- CTA button -->
+            <a href="#" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">
+                Free Call<i class="fa fa-solid fa-phone ms-3"></i>
+            </a>
+
+        </div>
+    </nav>
     <!-- Navbar End -->
